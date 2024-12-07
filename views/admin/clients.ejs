@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients List</title>
+</head>
+<body>
+    <h1>Clients List</h1>
+    <% clients.forEach(client => { %>
+        <div style="border: solid 5px black;">
+            <h1><%= client.username %></h1>
+            <h1><%= client.Name %></h1>
+            <h2><%= client.email %></h2>
+            <h2><%= client.role %></h2>
+
+            <form action="/admin/deleteClient/<%= client._id %>" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    <% }) %>
+</body>
+</html>

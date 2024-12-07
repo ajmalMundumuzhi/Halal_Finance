@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentors List</title>
+</head>
+<body>
+    <h1>Mentors List</h1>
+    <% mentors.forEach(mentor => { %>
+        <div style="border: solid 5px black;">
+            <h1><%= mentor.username %></h1>
+            <h1><%= mentor.Name %></h1>
+            <h2><%= mentor.email %></h2>
+            <h2><%= mentor.role %></h2>
+
+            <form action="/admin/deleteAdmin/<%= mentor._id %>" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    <% }) %>
+</body>
+</html>

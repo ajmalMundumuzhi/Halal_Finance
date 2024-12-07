@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admins List</title>
+</head>
+<body>
+    <h1>Admins List</h1>
+    <% admins.forEach(admin =>{ %>
+        <div style="border: solid 5px black;">
+            <h1><%= admin.username %></h1>
+            <h1><%= admin.Name %></h1>
+            <h2><%= admin.email %></h2>
+            <h2><%= admin.role %></h2>
+            <form action="/admin/deleteAdmin/<%= admin._id %>" method="post">
+                <button type="submit">Delete</button>
+            </form>             
+        </div>
+    <% }) %>
+</body>
+</html>

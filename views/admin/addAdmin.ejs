@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Admin</title>
+</head>
+<body>
+    <h1>Add Admin</h1>
+    <form action="/admin/addAdmin" method="post">
+        <label for="">User name</label>
+        <input type="text" name="username">
+
+        <label for="">Admin Name</label>
+        <input type="text" name="name">
+
+        <label for="">Email</label>
+        <input type="text" name="email">
+
+        <label for="">Password</label>
+        <input type="text" name="password">
+
+        <form action="/admin/admins" method="post">
+            <button type="submit">Submit</button>
+        </form>
+    </form>
+</body>
+</html>
