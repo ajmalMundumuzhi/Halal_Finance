@@ -15,7 +15,7 @@ const signupSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    qualification : {
+    qualification : { 
         type : String, 
         required : false
     },

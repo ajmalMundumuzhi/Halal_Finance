@@ -15,6 +15,9 @@ adminRouter.get('/admins',authenticatedAdmin,adminController.adminsGet)
 adminRouter.post('/deleteAdmin/:id',authenticatedAdmin,adminController.deleteAdmin)
 adminRouter.get('/addAdmin',authenticatedAdmin,adminController.addAdminGet)
 adminRouter.post('/addAdmin',authenticatedAdmin,adminController.addAdminPost)
+// login
+adminRouter.get('/adminLogin',adminController.adminLoginGet)
+adminRouter.post('/adminLogin',adminController.adminLoginPost)
 // mentors
 adminRouter.get('/mentors',authenticatedAdmin,adminController.mentorsGet)
 adminRouter.post('/deleteMentor/:id',authenticatedAdmin,adminController.deleteMentor)

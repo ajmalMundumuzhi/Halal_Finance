@@ -3,7 +3,7 @@ const signupModel = require('../models/signupModel')
 const authenticatedRole = (allowedRole) => {
     return async (req,res,next) => {
         try{
-            const authenticatedUser = res.session.user // it stores the logged-in username or userId
+            const authenticatedUser = req.session.user // it stores the logged-in username or userId
             if(!authenticatedUser){
                return res.redirect('/auth/login')
             }
@@ -13,7 +13,7 @@ const authenticatedRole = (allowedRole) => {
                 req.user = user
                 next()
             }else{
-                res.redirect('/auth/login')
+                res.redirect('/clientLogin')
             }
         }
         catch(err){

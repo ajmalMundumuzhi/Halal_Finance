@@ -11,5 +11,11 @@
     <h1><%= mentor.username %></h1>
     <h2><%= mentor.Name%></h2>
     <h2><%= mentor.email %></h2>
+
+    <!-- create room -->
+     <form action="/mentor/createRoom" method="post">
+        <input type="text" name="roomName" placeholder="Enter the new room name" required >
+        <button type="submit">Create room</button>
+     </form>
 </body>
 </html>

@@ -9,7 +9,7 @@ const authenticatedAdmin = async (req,res,next) => {
         if(admin === 'admin'){
             next()
         }else{
-            res.redirect('/auth/login')
+            res.redirect('/admin/adminLogin')
         }
     }
     catch(err){

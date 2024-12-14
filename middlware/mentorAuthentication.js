@@ -9,7 +9,7 @@ const authenticatedMentor = async (req,res,next) => {
         if(client){
             next()
         }else{
-            res.redirect('/auth/login')
+            res.redirect('/clientLogin')
         }
     }
     catch(err){

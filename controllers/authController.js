@@ -1,4 +1,4 @@
-const signupModel = require('../models/signupModel')
+    const signupModel = require('../models/signupModel')
 const signupValidation = require('../utilities/signupValidation')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -53,52 +53,6 @@ exports.signupPost = async (req,res) => {
     }
 }
 
-// login 
-
-exports.loginGet = (req,res) => {
-    res.render('login')
-}
-exports.loginPost = async (req,res) => {
-    try{
-        const mail = req.body.email
-        const profile = await signupModel.findOne({email : mail})
-
-        if(profile){
-            const password = await bcrypt.compare(
-                req.body.password,
-                profile.password
-            )
-
-            req.session.role = {
-                username : profile.username,
-                role : profile.role,
-            }
-
-            if(password){
-                if(profile.role === "admin"){
-                    req.session.admin =profile.username 
-                    res.redirect('/admin/dashboard')
-                }else if(profile.role === "mentor"){
-                    req.session.mentor = profile.username
-                    res.redirect('/mentor/dashboard')
-                }else if(profile.role === 'client'){
-                    req.session.client =profile.username
-                    res.redirect('/')
-                }
-            }else{
-                console.log("Password is incorrect")
-                res.status(400).json({message : "Check your password"})
-            }
-        }else{
-            console.log("Check your details")
-            res.status(401).json({user : "admin", data : "Check your details"})
-        }
-    }
-    catch(err){
-        console.log("Error while login : ",err)
-        res.status(500).json({message : "Logging in failed"})
-    }
-}
 // recover password
 exports.recoverPasswordGet = (req,res) => {
     res.render('recoverPassword')
@@ -140,16 +94,16 @@ exports.recoverPasswordPost = async (req,res) => {
         }else{
             console.log("Email not found")
             res.status(401).json({message : "Your email is not existing"})
-        }
-    }
-    catch(err){
-        console.log("Error while Post recover pass page : ",err)
-        res.status(500).json({message : "Error on recovering password"})
-    }
-}
+        }                                                                           
+    }                                                                               
+    catch(err){                                                                         
+        console.log("Error while Post recover pass page : ",err)                        
+        res.status(500).json({message : "Error on recovering password"})                
+    }                                                                                               
+}                                                                                                   
 
-// enter otp
-exports.otpVerificationGet = (req,res) => {
+// enter otp                                                                                                
+exports.otpVerificationGet = (req,res) => {                                                     
 
     const email = req.session.email
     if (email) {
@@ -237,3 +191,4 @@ exports.editProfileGet = async (req,res) => {
         res.status(500).json({message : "Edit profile page failed"})
     }
 }
+// profile works are in pending 

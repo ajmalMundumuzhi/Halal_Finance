@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+</head>
+<body>
+    <h1>Ask to an expert</h1>
+    <p>Here is the list of the rooms that available now</p>
+    <% rooms.forEach(room => { %>
+        <li>
+            <strong><%= room.roomName %></strong><p>Created by <%= room.mentor %></p>
+            <a href="/joinRoom/<%= room._id %>"><button>Join Room</button></a>
+            
+        </li>
+    <% }) %>
+</body>
+</html>

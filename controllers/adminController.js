@@ -7,6 +7,56 @@ exports.dashboard = (req,res) => {
     console.log("Dashboard")
     res.render('dashboard')
 }
+       
+// admin login
+exports.adminLoginGet = async (req,res) => {
+    try{
+        res.render('adminLogin')
+    }
+    catch{
+        console.log("Error while Get admin login page : ",err)
+        res.status(500).json({message : "Login page failed"})
+    }
+}
+
+exports.adminLoginPost = async (req,res) => {
+    try{
+        const mail = req.body.email
+        const profile = await signupModel.findOne({email : mail})
+
+        if(profile){
+            const password = await bcrypt.compare(
+                req.body.password,
+                profile.password
+            )
+            req.session.role = {
+                username : profile.username, 
+                role : profile.role
+            }
+            if(password){
+                req.session.user = profile.username
+                req.session.role = profile.role
+
+                if(profile.role === 'admin'){
+                    req.session.admin = profile.username
+                    res.redirect('/admin/dashboard')
+                }else{
+                    res.redirect('/admin/adminLogin')
+                }
+            }else{
+                console.log("Password is incorrect")
+                res.status(400).json({message : "Check your password"})
+            }
+        }else{
+            console.log("Not profile")
+            res.status(401).json({message : "Check your details"})
+        }
+    }
+    catch(err){
+        console.log("Error while POST admin login : ",err)
+        res.status(500).json({message : "Admin loging in failed"})
+    }
+}
 
 // admins list
 exports.adminsGet = async (req,res) => {

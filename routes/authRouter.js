@@ -12,9 +12,6 @@ authRouter.set('views','./views/auth')
 // Signup & Login 
 authRouter.get('/signup',authController.signupGet)
 authRouter.post('/signup',authController.signupPost)
-authRouter.get('/login',authController.loginGet)
-authRouter.post('/login',authController.loginPost)
-
 // edit profile 
 authRouter.get('/editProfile',authenticated,authController.editProfileGet)
 

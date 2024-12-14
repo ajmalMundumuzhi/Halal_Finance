@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat page</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Room Details</h1>
+    <h4>Room Name : <%= room.roomName %></h4>
+    <p>Mentor : <%= room.mentor %></p>
+    <p>Participents : <%= room.participents.join(', ') %></p>
+
+    <ul id="roomMessages"></ul>
+    <ul id="messages"></ul>
+    <form id="form">
+        <input type="text" id="input" placeholder="Type your message here..." required>
+        <button type="submit " id="sendButton">Send</button>
+        <button id="toggle-btn">Disconnect</button>
+    </form>
+
+    <script>
+        const  socket = io('http://localhost:3000')
+
+        socket.on('connect', () => {
+            console.log('Connected to the server')
+            const roomName = '<%= room.roomName %>'
+            socket.emit('join room', roomName)
+        })
+
+        socket.on('user joined', (message) => {
+            const li = document.createElement('li')
+            li.textContent = message
+            document.getElementById('roomMessages').appendChild(li)
+        })
+
+        document.getElementById('sendButton').addEventListener('click', () => {
+            const input = document.getElementById('input')
+            if(input.value) {
+                console.log(`Sending message : ${input.value}`)
+                socket.emit('chat message', {
+                    room : '<%= room.roomName %>',
+                    message : input.value
+                })
+                input.value = ''
+            }
+        })
+
+        socket.on('chat message', (msg) => {
+            const li = document.createElement('li')
+            li.textContent = msg
+            document.getElementById('messages').appendChild(li)
+        })
+        socket.on('messages', (msg) => {
+            alert(msg)
+        })
+
+    </script>
+
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.chat-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.messages {
+    height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.message {
+    padding: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+form {
+    display: flex;
+    padding: 10px;
+    background: #f4f4f4;
+}
+
+form input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+form button {
+    padding: 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #0056b3;
+}
+    </style>
+</body>
+</html>

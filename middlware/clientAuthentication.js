@@ -6,9 +6,10 @@ const authenticatedClient = async (req,res,next) => {
         const user = await signupModel.findOne({username : clientIsauthenticated})
         const client = user ? user.role : null;
         if(client === 'client'){
+            req.user = user
             next()
         }else{
-            res.redirect('/auth/login')
+            res.redirect('/clientLogin')
         }
     }
     catch(err){
