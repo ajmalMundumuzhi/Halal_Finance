@@ -7,15 +7,23 @@ const session = require('express-session')
 const http = require('http')
 const socketIo = require('socket.io')
 const server = http.createServer(app)
-const io = socketIo(server) 
+// const io = socketIo(server) 
+const cors = require('cors')
 
+const corsOptions = {
+    origin: '*', // This allows all origins explicitly
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+    credentials : true,
+};
+app.use(cors());
 const secret = process.env.SECRET
 // public
 app.use(express.static('./public'))
 
 // ejs view 
-
 app.set('view engine','ejs')
+
 
 //  session
 app.use(session({
@@ -41,25 +49,26 @@ const admin = require('./routes/adminRouter')
 const { log } = require('console')
 app.use('/admin',admin)
 
-// socket.io - chat
-io.on('connection', (socket) => {
-    console.log('A user connected')
+// // socket.io - chat
+// io.on('connection', (socket) => {
+//     console.log('A user connected')
 
-    socket.on('join room', (roomName) => {
-        socket.join(roomName)
-        console.log(`User joined room : ${roomName}`)
-        io.to(roomName).emit('User joined', `A new user has joined roon ${roomName}`)
-    })
+//     socket.on('join room', (roomName) => {
+//         socket.join(roomName)
+//         console.log(`User joined room : ${roomName}`)
+//         io.to(roomName).emit('User joined', `A new user has joined roon ${roomName}`)
+//     })
 
-    socket.on('chat message', ({ room, message }) => {
-        console.log(`Message recieved in room ${room} : ${message}`)
-        io.to(room).emit('chat message', message)
-    })
+//     socket.on('chat message', ({ room, message }) => {
+//         console.log(`Message recieved in room ${room} : ${message}`)
+//         io.to(room).emit('chat message', message)
+//     })
 
-    socket.on('disconnect', () => {
-        console.log('A user disconnected')
-    })
-})
+//     socket.on('disconnect', () => {
+//         console.log('A user disconnected')
+//     })
+// })
+
 dbConnect()
 .then(()=>{
     app.listen(port,()=>{

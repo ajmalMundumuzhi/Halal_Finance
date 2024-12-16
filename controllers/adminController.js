@@ -253,4 +253,15 @@ exports.deleteClient = async (req,res) => {
     }
 }
 
+exports.adminLogout = async (req,res) => {
+    try{
+        res.session.destroy()
+        res.redirect('/')
+    }
+    catch(err){
+        console.log("Error while logout admin : ", err)
+        res.status(500).json({message : "Admin logout failed"})
+    }
+}
+
 // Add client option is not required 

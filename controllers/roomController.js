@@ -7,7 +7,7 @@ exports.createRoom = async (req,res) => {
         const mentorName = req.session.mentor
         
         if(!mentorName){
-            return res.redirect('/auth/login')
+            return res.redirect('/clientLogin')
         }
         const newRoom = new roomModel({
             roomName : roomName, 
@@ -40,18 +40,19 @@ exports.deleteRoom = async (req,res) => {
     }
 }
 
-exports.getRooms = async (req,res) => {
-    try{
-        const rooms = await roomModel.find()
-        console.log(rooms);
-        
-        res.render('room',{rooms})
+exports.getRooms = async (req, res) => {
+    try {
+        const rooms = await roomModel.find();  // Fetch the rooms from the database
+        console.log(rooms);  // Log the rooms to check the data
+
+        // Send the rooms as a JSON response
+        res.json(rooms);
     }   
-    catch(err){
-        console.log("Error while get room list")
-        res.status(500).json({message : "Room list failed"})
+    catch (err) {
+        console.log("Error while getting room list:", err);
+        res.status(500).json({ message: "Room list failed" });
     }   
-}       
+};   
 
 
 exports.getRoomById = async (req,res) => {
@@ -84,10 +85,10 @@ exports.joinRoom = async (req,res) => {
         }
 
         const clientName = req.session.client
-
-        // if(!clientName){
-        //     return res.redirect('/auth/login')
-        // }
+        console.log(clientName)
+        if(!clientName){
+            return res.redirect('/clientLogin')
+        }
         if(!room.participents.includes(clientName)){
             room.participents.push(clientName)
             await room.save()

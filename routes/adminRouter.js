@@ -26,5 +26,7 @@ adminRouter.post('/addMentor',authenticatedAdmin,adminController.addMentorPost)
 // clients 
 adminRouter.get('/clients',authenticatedAdmin,adminController.clientsGet)
 adminRouter.post('/deleteClient/:id',authenticatedAdmin,adminController.deleteClient)
+// logout 
+adminRouter.get('/logout',authenticatedAdmin,adminController.adminLogout)
 
 module.exports = adminRouter

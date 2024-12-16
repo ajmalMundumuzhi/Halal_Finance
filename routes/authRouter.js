@@ -9,9 +9,11 @@ authRouter.use(express.urlencoded({ extended: true }))
 authRouter.set('view engine','ejs')
 authRouter.set('views','./views/auth')
 
-// Signup & Login 
+// Signup & verification
 authRouter.get('/signup',authController.signupGet)
 authRouter.post('/signup',authController.signupPost)
+authRouter.get('/signupVerification',authController.signupVerificationGet)
+authRouter.post('/signupVerification',authController.signupVerificationPost)
 // edit profile 
 authRouter.get('/editProfile',authenticated,authController.editProfileGet)
 

@@ -3,11 +3,19 @@ const bcrypt = require('bcrypt')
 
 exports.index = async (req,res) => {
     try{
-        res.render('index')
+        console.log("session data : ",req.session)
+        const username = req.session.username
+        if(username){
+            console.log("User logged in  : ",username)
+            res.render('index',{username})            
+        }else{
+            console.log("User not found")
+            res.render('index', {username : null})
+        }
     }
     catch(err){
         console.log("Error while Entering to the website : ",err)
-        res.status(500).json({message : "Website error"})
+        res.status(500).json({message : "Index page failed"})
     }
 }
 
@@ -44,7 +52,7 @@ exports.clientLoginPost = async (req,res) => {
                     req.session.mentor = profile.username
                     res.redirect('/mentor/dashboard')
                 }else{
-                    res.redirect('/clientLogin')
+                    res.redirect('/')
                 }
             }else{
                 console.log("Password is incorrect")
@@ -58,5 +66,16 @@ exports.clientLoginPost = async (req,res) => {
     catch(err){
         console.log("Error while login Post : ",err)
         res.status(500).json({message : "Error while post login"})
+    }
+}
+
+exports.logout = async (req,res) => {
+    try{
+        req.session.destroy()
+        res.redirect('/')
+    }
+    catch(err){
+        console.log("Error while login out : ",err)
+        res.status(500).json({message : "Login out  failed"})
     }
 }

@@ -17,5 +17,7 @@ clientRouter.get('/joinRoom/:id',authAuthenticated(['admin','mentor','client']),
 //login 
 clientRouter.get('/clientLogin', clientController.clientLoginGet)
 clientRouter.post('/clientLogin', clientController.clientLoginPost) 
+// logout 
+clientRouter.get('/logout',authAuthenticated,clientController.logout)
 
 module.exports = clientRouter
