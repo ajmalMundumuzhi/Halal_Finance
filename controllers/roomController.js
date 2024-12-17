@@ -42,11 +42,11 @@ exports.deleteRoom = async (req,res) => {
 
 exports.getRooms = async (req, res) => {
     try {
-        const rooms = await roomModel.find();  // Fetch the rooms from the database
-        console.log(rooms);  // Log the rooms to check the data
+        const rooms = await roomModel.find();  
+        console.log(rooms);
 
-        // Send the rooms as a JSON response
-        res.json(rooms);
+        // res.json(rooms);
+        res.render('room',{rooms})
     }   
     catch (err) {
         console.log("Error while getting room list:", err);

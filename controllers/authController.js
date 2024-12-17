@@ -14,7 +14,7 @@ exports.signupGet = (req,res) => {
 
 exports.signupPost = async (req,res) => {
     try{
-        const {username, Name, email, password, bio, qualification} = req.body
+        const {username, name, email, password, bio, qualification} = req.body
 
         const alreadyUser = await signupModel.findOne({username})
         const alreadyEmail = await signupModel.findOne({email})
@@ -36,7 +36,7 @@ exports.signupPost = async (req,res) => {
             return res.status(422).json({message : "Please provide all details"})
         } else if(!signupValidation.clientValidation(username)){
             return res.status(422).json({message : "Enter a valid username"})
-        } else if(!signupValidation.nameValidation(Name)){
+        } else if(!signupValidation.nameValidation(name)){
             return res.status(422).json({message : "Enter a valid name"})
         }else if(!signupValidation.emailValidation(email)){
             return res.status(422).json({message : "Enter a valid email id"})
@@ -53,7 +53,7 @@ exports.signupPost = async (req,res) => {
             
             req.session.tempUser = {
                 username,
-                Name,
+                name,
                 email,
                 password : hashedPassword,
                 otp : generateOtp,
@@ -107,7 +107,7 @@ exports.signupVerificationPost = async (req,res) => {
     try{
         const {otp} = req.body
         const tempUser = req.session.tempUser
-
+        
         if(!tempUser){
             res.status(400).json({message : "Session expired. Please sign up again"})
         }
@@ -116,21 +116,22 @@ exports.signupVerificationPost = async (req,res) => {
         }
         const newUser = new signupModel({
             username : tempUser.username,
-            Name : tempUser.Name, 
+            Name : tempUser.name, 
             email : tempUser.email,
             password : tempUser.password,
             bio : tempUser.bio,
+            otp : tempUser.otp,
             qualification : tempUser.qualification,
             profileImage : tempUser.profileImage,
         })
         await newUser.save()
-
+        console.log(otp)
         req.session.tempUser = null
         res.redirect('/clientLogin')
     }
     catch(err){
         console.log("Error while verifying with otp : ",err)
-        res.status(500).json({message : "OTP Verification failed"})
+        res.status(500).json({message : "OTP Verification failed g"})
     }
 }
 
@@ -196,6 +197,7 @@ exports.otpVerificationGet = (req,res) => {
     }
     
 }
+
 exports.otpVerificationPost = async (req,res) => {
     try{
         const {otp} = req.body
@@ -218,6 +220,8 @@ exports.otpVerificationPost = async (req,res) => {
         res.status(500).json({message : "Otp verification failed"})
     }   
 }       
+
+
 
 // new password 
 exports.newPasswordGet = async (req,res) =>{ 

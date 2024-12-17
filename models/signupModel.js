@@ -28,6 +28,9 @@ const signupSchema = new mongoose.Schema({
         required :false,
         default : null
     },
+    otpExpiry : {
+        type : Date
+    },
     role : {
         type : String,
         required : true,
