@@ -3,61 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat page</title>
+    <title>Chat Page</title>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <h1>Room Details</h1>
-    <h4>Room Name : <%= room.roomName %></h4>
-    <p>Mentor : <%= room.mentor %></p>
-    <p>Participents : <%= room.participents.join(', ') %></p>
+    <h4>Room Name: <%= room.roomName %></h4>
+    <p>Mentor: <%= room.mentor %></p>
+    <p>Participants: <%= room.participents.join(', ') %></p>
 
     <ul id="roomMessages"></ul>
     <ul id="messages"></ul>
     <form id="form">
         <input type="text" id="input" placeholder="Type your message here..." required>
-        <button type="submit " id="sendButton">Send</button>
+        <button type="submit">Send</button>
         <button id="toggle-btn">Disconnect</button>
     </form>
 
     <script>
-        const  socket = io('http://localhost:3000')
+const socket = io('http://localhost:3000');
 
-        socket.on('connect', () => {
-            console.log('Connected to the server')
-            const roomName = '<%= room.roomName %>'
-            socket.emit('join room', roomName)
-        })
+socket.on('connect', () => {
+    console.log('Connected to the server');
+    const roomName = '<%= room.roomName %>'; // Ensure 'room.roomName' is defined on the server
+    socket.emit('join room', roomName);
+});
 
-        socket.on('user joined', (message) => {
-            const li = document.createElement('li')
-            li.textContent = message
-            document.getElementById('roomMessages').appendChild(li)
-        })
+socket.on('user joined', (message) => {
+    const li = document.createElement('li');
+    li.textContent = message;
+    document.getElementById('roomMessages').appendChild(li);
+});
 
-        document.getElementById('sendButton').addEventListener('click', () => {
-            const input = document.getElementById('input')
-            if(input.value) {
-                console.log(`Sending message : ${input.value}`)
-                socket.emit('chat message', {
-                    room : '<%= room.roomName %>',
-                    message : input.value
-                })
-                input.value = ''
-            }
-        })
+document.getElementById('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('input');
+    if (input.value) {
+        console.log(`Sending message: ${input.value}`);
+        socket.emit('chat message', {
+            room: '<%= room.roomName %>',
+            message: input.value,
+        });
+        input.value = '';
+    }
+});
 
-        socket.on('chat message', (msg) => {
-            const li = document.createElement('li')
-            li.textContent = msg
-            document.getElementById('messages').appendChild(li)
-        })
-        socket.on('messages', (msg) => {
-            alert(msg)
-        })
+socket.on('chat message', (msg) => {
+    const li = document.createElement('li');
+    li.textContent = msg;
+    document.getElementById('messages').appendChild(li);
+});
+
+// Disconnect button functionality
+document.getElementById('toggle-btn').addEventListener('click', () => {
+    socket.disconnect();
+    console.log('Disconnected from the server');
+});
 
     </script>
-
     <style>
         body {
     font-family: Arial, sans-serif;
@@ -125,5 +128,6 @@ form button:hover {
     background: #0056b3;
 }
     </style>
+
 </body>
 </html>

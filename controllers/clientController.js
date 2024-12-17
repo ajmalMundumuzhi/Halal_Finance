@@ -71,11 +71,13 @@ exports.clientLoginPost = async (req,res) => {
 
 exports.logout = async (req,res) => {
     try{ 
+        console.log("hi")
         req.session.destroy((err) => {
             if (err) {
                 console.log("Error while logging out: ", err);
                 return res.status(500).json({ message: "Logging out failed" });
             } else {
+                console.log("HHEH")
                 return res.redirect('/');
             }
         });
