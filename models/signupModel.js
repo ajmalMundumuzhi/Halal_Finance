@@ -33,6 +33,10 @@ const signupSchema = new mongoose.Schema({
         required : true,
         default : "client"
     },
+    bio : {
+        type : String,
+        required : false
+    },
     profileImage : {
         type : String,
         required : false

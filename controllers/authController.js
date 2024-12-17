@@ -14,10 +14,17 @@ exports.signupGet = (req,res) => {
 
 exports.signupPost = async (req,res) => {
     try{
-        const {username, Name, email, password} = req.body
+        const {username, Name, email, password, bio, qualification} = req.body
 
         const alreadyUser = await signupModel.findOne({username})
         const alreadyEmail = await signupModel.findOne({email})
+
+        if(!bio){
+            return res.status(422).json({message : "Invalid bio"})
+        }
+        if(!password){
+            return res.status(422).json({message : "Password is required"})
+        }
 
         if(alreadyUser){
             return res.status(422).json({message : "The Username is already taken"})
@@ -37,6 +44,11 @@ exports.signupPost = async (req,res) => {
             return res.status(422).json({message : "Enter a strong password"})
         }else{
             const hashedPassword = await bcrypt.hash(password,10)
+            let path = ''
+            if(req.file){
+                path = '/images/upload/profile/' + req.file.filename
+            }
+            console.log(path)
             const generateOtp = crypto.randomInt(100000, 999999)
             
             req.session.tempUser = {
@@ -45,6 +57,9 @@ exports.signupPost = async (req,res) => {
                 email,
                 password : hashedPassword,
                 otp : generateOtp,
+                profileImage : path,
+                bio, 
+                qualification,
             }
 
 
@@ -103,7 +118,10 @@ exports.signupVerificationPost = async (req,res) => {
             username : tempUser.username,
             Name : tempUser.Name, 
             email : tempUser.email,
-            password : tempUser.password
+            password : tempUser.password,
+            bio : tempUser.bio,
+            qualification : tempUser.qualification,
+            profileImage : tempUser.profileImage,
         })
         await newUser.save()
 

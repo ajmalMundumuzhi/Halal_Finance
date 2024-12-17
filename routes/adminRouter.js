@@ -2,6 +2,10 @@ const express = require('express')
 const adminRouter = express()
 const adminController = require('../controllers/adminController')
 const authenticatedAdmin = require('../middlware/adminAuthentication')
+// multer
+const storage = require('../utilities/multer')
+const multer = require('multer')
+const upload = multer({storage : storage})
 
 adminRouter.set('view engine', 'ejs');
 adminRouter.set('views', './views/admin')
@@ -22,7 +26,7 @@ adminRouter.post('/adminLogin',adminController.adminLoginPost)
 adminRouter.get('/mentors',authenticatedAdmin,adminController.mentorsGet)
 adminRouter.post('/deleteMentor/:id',authenticatedAdmin,adminController.deleteMentor)
 adminRouter.get('/addMentor',authenticatedAdmin,adminController.addMentorGet)
-adminRouter.post('/addMentor',authenticatedAdmin,adminController.addMentorPost)
+adminRouter.post('/addMentor', upload.single('profileImage'),authenticatedAdmin,adminController.addMentorPost)
 // clients 
 adminRouter.get('/clients',authenticatedAdmin,adminController.clientsGet)
 adminRouter.post('/deleteClient/:id',authenticatedAdmin,adminController.deleteClient)

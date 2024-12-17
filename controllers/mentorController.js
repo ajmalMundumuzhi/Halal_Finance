@@ -14,4 +14,4 @@ exports.dashboard = async (req,res) => {
         console.log("Error while getting dashboard",err)
         res.status(500).json({message : "Dashboard page fialed"})
     }
-} 
+}

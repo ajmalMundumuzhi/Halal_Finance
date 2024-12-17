@@ -70,9 +70,15 @@ exports.clientLoginPost = async (req,res) => {
 }
 
 exports.logout = async (req,res) => {
-    try{
-        req.session.destroy()
-        res.redirect('/')
+    try{ 
+        req.session.destroy((err) => {
+            if (err) {
+                console.log("Error while logging out: ", err);
+                return res.status(500).json({ message: "Logging out failed" });
+            } else {
+                return res.redirect('/');
+            }
+        });
     }
     catch(err){
         console.log("Error while login out : ",err)

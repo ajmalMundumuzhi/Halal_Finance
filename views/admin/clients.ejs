@@ -9,10 +9,13 @@
     <h1>Clients List</h1>
     <% clients.forEach(client => { %>
         <div style="border: solid 5px black;">
-            <h1><%= client.username %></h1>
-            <h1><%= client.Name %></h1>
-            <h2><%= client.email %></h2>
-            <h2><%= client.role %></h2>
+            <h1>User name : <%= client.username %></h1>
+            <h1>Name : <%= client.Name %></h1>
+            <h2>Email : <%= client.email %></h2>
+            <h2>Role : <%= client.role %></h2>
+            <h2>Qualification : <%= client.qualification %></h2>
+            <h2>Bio : <%= client.bio %></h2>
+            <img src="<%= client.profileImage %>" alt="<%= client.Name %>" style="height: 150px; width: 150px;">
 
             <form action="/admin/deleteClient/<%= client._id %>" method="post">
                 <button type="submit">Delete</button>

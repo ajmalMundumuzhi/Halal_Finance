@@ -112,13 +112,13 @@ exports.addAdminPost = async (req,res) => {
 
         // rejex
         else if(!signupValidation.clientValidation(username)){
-            res.status(422).json({message : "Enter a valid user name"})
+            return res.status(422).json({message : "Enter a valid user name"})
         }else if(!signupValidation.nameValidation(name)){
-            res.status(422).json({message : "Enter a valid name"})
+            return res.status(422).json({message : "Enter a valid name"})
         }else if(!signupValidation.emailValidation(email)){
-            res.status(422).json({message : "Enter a valid email "})
+            return res.status(422).json({message : "Enter a valid email "})
         }else if(!signupValidation.passwordValidation(password)){
-            res.status(422).json({message : "Enter a valid Password"})
+            return res.status(422).json({message : "Enter a valid Password"})
         }else{
             const hashedPassword = await bcrypt.hash(password,10)
             const admin = new signupModel({
@@ -126,11 +126,10 @@ exports.addAdminPost = async (req,res) => {
                 Name : name,
                 email : email, 
                 password : hashedPassword,
-                role : "admin"
-            })                     
+                role : "admin",
+            })                
             await admin.save()
-
-            res.redirect('admins')
+            return res.redirect('admins')
         } 
     }
     catch(err){
@@ -143,6 +142,7 @@ exports.addAdminPost = async (req,res) => {
 exports.mentorsGet = async (req,res) => {
     try{
         const mentors = await signupModel.find({role : "mentor"})
+        console.log(mentors)
         res.render('mentors',{mentors})
     }
     catch(err){
@@ -181,10 +181,15 @@ exports.addMentorGet = async (req,res) => {
 
 exports.addMentorPost = async (req,res) => {
     try{
-        const {username, name, email, password} = req.body
+        const {username, name, email, password, bio, qualification} = req.body
+        console.log("Request body : ",req.body && req.file)
+        
 
+        if(!bio){
+            return res.status(422).json({message : "Invalid Bio"})
+        }
         if(!password){
-            res.status(422).json({message : "Password is required"})
+            return res.status(422).json({message : "Password is required"})
         }
         console.log(password)
 
@@ -192,28 +197,36 @@ exports.addMentorPost = async (req,res) => {
         const existEmail = await signupModel.findOne({email : email})
 
         if(existUser){
-            res.status(422).json({message : "Username is taken"})
+            return res.status(422).json({message : "Username is taken"})
         }else if(existEmail){
-            res.status(422).json({message : "Email address is existing"})
+            return res.status(422).json({message : "Email address is existing"})
         }else if(!signupValidation.clientValidation(username)){
-            res.status(422).json({message : "Entert a valid user name"})
+            return res.status(422).json({message : "Entert a valid user name"})
         }else if(!signupValidation.nameValidation(name)){
-            res.status(422).json({message : "Enter a valid name"})
+            return res.status(422).json({message : "Enter a valid name"})
         }else if(!signupValidation.emailValidation(email)){
-            res.status(422).json({message : "Enter a valid email address"})
+            return res.status(422).json({message : "Enter a valid email address"})
         }else if(!signupValidation.passwordValidation(password)){
-            res.status(422).json({message : "Enter a valid password"})
+            return res.status(422).json({message : "Enter a valid password"})
         }else{
             const hashedPassword = await bcrypt.hash(password,10)
+            let path = ''
+            if(req.file){ 
+                path = '/images/upload/profile/' + req.file.filename
+            }
+            console.log("Image Path : ", path)
             const mentor = new signupModel({
                 username : username,
                 Name : name, 
                 email : email,
+                bio : bio,
+                qualification : qualification,
                 password : hashedPassword,
-                role : "mentor"
+                role : "mentor",
+                profileImage : path,
             })
             await mentor.save()
-            res.redirect('/admin/mentors')
+            return res.redirect('/admin/mentors')
         }
     }
     catch(err){

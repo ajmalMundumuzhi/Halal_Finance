@@ -9,10 +9,13 @@
     <h1>Mentors List</h1>
     <% mentors.forEach(mentor => { %>
         <div style="border: solid 5px black;">
-            <h1><%= mentor.username %></h1>
-            <h1><%= mentor.Name %></h1>
-            <h2><%= mentor.email %></h2>
-            <h2><%= mentor.role %></h2>
+            <h1>User name : <%= mentor.username %></h1>
+            <h1>Name : <%= mentor.Name %></h1>
+            <h2>Email :  <%= mentor.email %></h2>
+            <h2>Role : <%= mentor.role %></h2>
+            <h2>Bio : <%= mentor.bio %></h2>
+            <h2>Qualification : <%= mentor.qualification %></h2>
+            <img src="<%= mentor.profileImage %>" alt="<%= mentor.Name %>" style="width: 100px; height: 100px;" >
 
             <form action="/admin/deleteAdmin/<%= mentor._id %>" method="post">
                 <button type="submit">Delete</button>

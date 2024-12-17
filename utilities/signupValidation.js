@@ -18,7 +18,7 @@ exports.passwordValidation = (password) => {
 }
 
 exports.nameValidation = (Name) => {
-    const nameRejex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/
+    const nameRejex = /^[a-z || A-Z]+(?:\s[a-zA-Z]+)*$/
     return nameRejex.test(Name)
 }
 
