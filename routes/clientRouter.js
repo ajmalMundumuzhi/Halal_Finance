@@ -3,6 +3,7 @@ const clientRouter = express()
 const clientController = require('../controllers/clientController')
 const roomController = require('../controllers/roomController')
 const authAuthenticated = require('../middlware/authAuthentication')
+const chatController = require('../controllers/chatController')
 
 clientRouter.use(express.json())
 clientRouter.use(express.urlencoded({extended : true}))
@@ -19,5 +20,6 @@ clientRouter.get('/clientLogin', clientController.clientLoginGet)
 clientRouter.post('/clientLogin', clientController.clientLoginPost) 
 // logout 
 clientRouter.get('/logout',clientController.logout)
+clientRouter.get('/chatSave',chatController.chatSave)
 
 module.exports = clientRouter
